@@ -11,14 +11,13 @@ import UIKit
 // MARK: - GridViewLayoutDelegate
 
 @objc protocol GridViewLayoutDelegate {
-
-  @objc optional var separatorHeight: CGFloat { get }
-  @objc optional var separatorEdgeInsets: UIEdgeInsets { get }  // Ignores the top and bottom insets.
-  @objc optional var separatorBackgroundColor: UIColor { get }
-  @objc optional func heightForHeader(in section: Int) -> CGFloat
-  @objc optional func heightForFooter(in section: Int) -> CGFloat
-  @objc optional func heightForItem(at indexPath: IndexPath) -> CGFloat
-  @objc optional func widthForSection(section: Int) -> CGFloat
+  var separatorHeight: CGFloat { get }
+  var separatorEdgeInsets: UIEdgeInsets { get }  // Ignores the top and bottom insets.
+  var separatorBackgroundColor: UIColor { get }
+  func heightForHeader(in section: Int) -> CGFloat
+  func heightForFooter(in section: Int) -> CGFloat
+  func heightForItem(at indexPath: IndexPath) -> CGFloat
+  func widthForSection(section: Int) -> CGFloat
 }
 
 // MARK: - GridViewLayout
@@ -67,7 +66,7 @@ class GridViewLayout: UICollectionViewLayout {
 
     for section in 0..<sections {
 
-      let sectionWidth = delegate?.widthForSection?(section: section) ?? 0.0
+      let sectionWidth = delegate?.widthForSection(section: section) ?? 0.0
       let horizontallyExpand = sectionWidth < collectionView.bounds.width
 
       if horizontallyExpand {
@@ -80,7 +79,7 @@ class GridViewLayout: UICollectionViewLayout {
       let headerAttributes = supplementaryLayoutAttributes(forKind: UICollectionElementKindSectionHeader,
                                                            startingAt: CGPoint(x: xCursor, y: yCursor),
                                                            width: sectionWidth,
-                                                           height: delegate?.heightForHeader?(in: section) ?? 0.0,
+                                                           height: delegate?.heightForHeader(in: section) ?? 0.0,
                                                            at: headerIndexPath)
 
       headerLayoutAttributes[headerIndexPath] = headerAttributes
@@ -97,7 +96,7 @@ class GridViewLayout: UICollectionViewLayout {
         let itemIndexPath = IndexPath(item: item, section: section)
         let itemAttributes = itemLayoutAttributes(startingAt: CGPoint(x: xCursor, y: yCursor),
                                                   width: sectionWidth,
-                                                  height: delegate?.heightForItem?(at: itemIndexPath) ?? 0.0,
+                                                  height: delegate?.heightForItem(at: itemIndexPath) ?? 0.0,
                                                   at: itemIndexPath)
 
         itemLayoutAttributes[itemIndexPath] = itemAttributes
@@ -124,7 +123,7 @@ class GridViewLayout: UICollectionViewLayout {
       let footerAttributes = supplementaryLayoutAttributes(forKind: UICollectionElementKindSectionFooter,
                                                            startingAt: CGPoint(x: xCursor, y: yCursor),
                                                            width: sectionWidth,
-                                                           height: delegate?.heightForFooter?(in: section) ?? 0.0,
+                                                           height: delegate?.heightForFooter(in: section) ?? 0.0,
                                                            at: footerIndexPath)
 
       footerLayoutAttributes[footerIndexPath] = footerAttributes
