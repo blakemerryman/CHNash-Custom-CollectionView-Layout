@@ -95,7 +95,7 @@ class GridViewLayout: UICollectionViewLayout {
 
       for item in 0..<itemsInSection {
 
-        // layout item
+        // Layout item
 
         let itemIndexPath = IndexPath(item: item, section: section)
         let itemAttributes = itemLayoutAttributes(startingAt: CGPoint(x: xCursor, y: yCursor),
@@ -106,7 +106,8 @@ class GridViewLayout: UICollectionViewLayout {
         itemLayoutAttributes[itemIndexPath] = itemAttributes
         yCursor += itemAttributes.frame.height
 
-        // layout separator (if needed)
+        // Layout separator (if needed)
+
         if item < lastItem {
           let separatorAttributes = separatorLayoutAttributes(startingAt: CGPoint(x: xCursor, y: yCursor),
                                                               width: sectionWidth,
@@ -138,14 +139,19 @@ class GridViewLayout: UICollectionViewLayout {
       }
     }
 
+    // Update our content size using our X & Y cursor
+    
     contentSize = CGSize(width: xCursor, height: yCursor)
   }
 
   override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    // You should handle layout invalidation better than this 😂
     return true
   }
 
   override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+
+    // Run through all of the layout attributes & figure out which are currently onscreen!
 
     var layoutAttributes: [UICollectionViewLayoutAttributes] = []
 
@@ -177,6 +183,9 @@ class GridViewLayout: UICollectionViewLayout {
 
   }
 
+  // MARK: - Access individual attributes
+  // You should be returning pre-calculated attributes in all of these methods.
+
   override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
     return itemLayoutAttributes[indexPath]
   }
@@ -186,7 +195,7 @@ class GridViewLayout: UICollectionViewLayout {
     if elementKind == UICollectionElementKindSectionHeader {
       return headerLayoutAttributes[indexPath]
     }
-    else { // Assume it's a footer
+    else { // Otherwise, assume it's a footer
       return footerLayoutAttributes[indexPath]
     }
   }
