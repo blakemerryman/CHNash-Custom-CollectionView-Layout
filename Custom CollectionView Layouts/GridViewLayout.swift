@@ -11,13 +11,17 @@ import UIKit
 // MARK: - GridViewLayoutDelegate
 
 @objc protocol GridViewLayoutDelegate {
+
   var separatorHeight: CGFloat { get }
   var separatorEdgeInsets: UIEdgeInsets { get }  // Ignores the top and bottom insets.
   var separatorBackgroundColor: UIColor { get }
+
   func heightForHeader(in section: Int) -> CGFloat
   func heightForFooter(in section: Int) -> CGFloat
   func heightForItem(at indexPath: IndexPath) -> CGFloat
+
   func widthForSection(section: Int) -> CGFloat
+  
 }
 
 // MARK: - GridViewLayout
@@ -104,14 +108,13 @@ class GridViewLayout: UICollectionViewLayout {
 
         // layout separator (if needed)
         if item < lastItem {
+          let separatorAttributes = separatorLayoutAttributes(startingAt: CGPoint(x: xCursor, y: yCursor),
+                                                              width: sectionWidth,
+                                                              height: delegate?.separatorHeight ?? 0.0,
+                                                              backgroundColor: delegate?.separatorBackgroundColor,
+                                                              edgeInsets: delegate?.separatorEdgeInsets,
+                                                              at: itemIndexPath)
 
-          let separatorHeight = delegate?.separatorHeight ?? 0.0
-          let separatorAttributes = HorizontalSeparatorReusableViewLayoutAttributes(forDecorationViewOfKind: separatorKind, with: itemIndexPath)
-
-          separatorAttributes.backgroundColor = delegate?.separatorBackgroundColor
-          separatorAttributes.edgeInsets = delegate?.separatorEdgeInsets
-          separatorAttributes.frame = CGRect(origin: CGPoint(x: xCursor, y: yCursor),
-                                             size: CGSize(width: sectionWidth, height: separatorHeight))
           separatorLayoutAttributes[itemIndexPath] = separatorAttributes
           yCursor += separatorAttributes.frame.height
         }
@@ -183,11 +186,8 @@ class GridViewLayout: UICollectionViewLayout {
     if elementKind == UICollectionElementKindSectionHeader {
       return headerLayoutAttributes[indexPath]
     }
-    else if elementKind == UICollectionElementKindSectionFooter {
+    else { // Assume it's a footer
       return footerLayoutAttributes[indexPath]
-    }
-    else {
-      return nil
     }
   }
 
@@ -224,5 +224,22 @@ fileprivate extension GridViewLayout {
     attributes.frame = CGRect(origin: coordinates, size: size)
     return attributes
   }
+
+  func separatorLayoutAttributes(startingAt coordinates: CGPoint,
+                            width: CGFloat,
+                            height: CGFloat,
+                            backgroundColor: UIColor?,
+                            edgeInsets: UIEdgeInsets?,
+                            at indexPath: IndexPath) -> UICollectionViewLayoutAttributes {
+
+    let separatorKind = String(describing: HorizontalSeparatorReusableView.self)
+    let size = CGSize(width: width, height: height)
+    let attributes = HorizontalSeparatorReusableViewLayoutAttributes(forDecorationViewOfKind: separatorKind, with: indexPath)
+    attributes.backgroundColor = backgroundColor
+    attributes.edgeInsets = edgeInsets
+    attributes.frame = CGRect(origin: coordinates, size: size)
+    return attributes
+  }
+
 
 }
