@@ -11,13 +11,14 @@ import UIKit
 // MARK: - GridViewLayoutDelegate
 
 @objc protocol GridViewLayoutDelegate {
-  
+
   @objc optional var separatorHeight: CGFloat { get }
   @objc optional var separatorEdgeInsets: UIEdgeInsets { get }  // Ignores the top and bottom insets.
   @objc optional var separatorBackgroundColor: UIColor { get }
   @objc optional func heightForHeader(in section: Int) -> CGFloat
   @objc optional func heightForFooter(in section: Int) -> CGFloat
   @objc optional func heightForItem(at indexPath: IndexPath) -> CGFloat
+  @objc optional func widthForSection(section: Int) -> CGFloat
 }
 
 // MARK: - GridViewLayout
@@ -54,22 +55,31 @@ class GridViewLayout: UICollectionViewLayout {
     let separatorKind = String(describing: separatorClass)
     register(separatorClass, forDecorationViewOfKind: separatorKind)
 
-    let availableWidth = collectionView.bounds.width
+    let sections = dataSource.numberOfSections?(in: collectionView) ?? 0
 
     var xCursor: CGFloat = 0.0
     var yCursor: CGFloat = 0.0
 
     // Layout sections...
 
-    let sections = dataSource.numberOfSections?(in: collectionView) ?? 0
+    var previousSectionMinY = yCursor
+    var currentSectionMinY = yCursor
 
     for section in 0..<sections {
+
+      let sectionWidth = delegate?.widthForSection?(section: section) ?? 0.0
+      let horizontallyExpand = sectionWidth < collectionView.bounds.width
+
+      if horizontallyExpand {
+        yCursor = previousSectionMinY
+        currentSectionMinY = yCursor
+      }
 
       // Layout Header
       let headerIndexPath = IndexPath(item: 0, section: section)
       let headerAttributes = supplementaryLayoutAttributes(forKind: UICollectionElementKindSectionHeader,
                                                            startingAt: CGPoint(x: xCursor, y: yCursor),
-                                                           width: availableWidth,
+                                                           width: sectionWidth,
                                                            height: delegate?.heightForHeader?(in: section) ?? 0.0,
                                                            at: headerIndexPath)
 
@@ -86,7 +96,7 @@ class GridViewLayout: UICollectionViewLayout {
 
         let itemIndexPath = IndexPath(item: item, section: section)
         let itemAttributes = itemLayoutAttributes(startingAt: CGPoint(x: xCursor, y: yCursor),
-                                                  width: availableWidth,
+                                                  width: sectionWidth,
                                                   height: delegate?.heightForItem?(at: itemIndexPath) ?? 0.0,
                                                   at: itemIndexPath)
 
@@ -102,7 +112,7 @@ class GridViewLayout: UICollectionViewLayout {
           separatorAttributes.backgroundColor = delegate?.separatorBackgroundColor
           separatorAttributes.edgeInsets = delegate?.separatorEdgeInsets
           separatorAttributes.frame = CGRect(origin: CGPoint(x: xCursor, y: yCursor),
-                                             size: CGSize(width: availableWidth, height: separatorHeight))
+                                             size: CGSize(width: sectionWidth, height: separatorHeight))
           separatorLayoutAttributes[itemIndexPath] = separatorAttributes
           yCursor += separatorAttributes.frame.height
         }
@@ -113,16 +123,18 @@ class GridViewLayout: UICollectionViewLayout {
       let footerIndexPath = IndexPath(item: 0, section: section)
       let footerAttributes = supplementaryLayoutAttributes(forKind: UICollectionElementKindSectionFooter,
                                                            startingAt: CGPoint(x: xCursor, y: yCursor),
-                                                           width: availableWidth,
+                                                           width: sectionWidth,
                                                            height: delegate?.heightForFooter?(in: section) ?? 0.0,
                                                            at: footerIndexPath)
 
       footerLayoutAttributes[footerIndexPath] = footerAttributes
       yCursor += footerAttributes.frame.height
-    }
 
-    // Set xCursor to the furthest expected x coordinate to ensure correct content size.
-    xCursor = availableWidth
+      if horizontallyExpand {
+        xCursor += sectionWidth
+        previousSectionMinY = currentSectionMinY
+      }
+    }
 
     contentSize = CGSize(width: xCursor, height: yCursor)
   }

@@ -62,6 +62,12 @@ extension GridViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: UICollectionViewCell.self), for: indexPath)
+    if indexPath.section % 2 == 0 {
+      cell.backgroundColor = .lightGray
+    }
+    else {
+      cell.backgroundColor = .white
+    }
     return cell
   }
 
@@ -86,7 +92,7 @@ extension GridViewController: GridViewLayoutDelegate {
   }
 
   var separatorBackgroundColor: UIColor {
-    return .lightGray
+    return .blue
   }
 
   func heightForHeader(in section: Int) -> CGFloat {
@@ -99,6 +105,16 @@ extension GridViewController: GridViewLayoutDelegate {
 
   func heightForItem(at indexPath: IndexPath) -> CGFloat {
     return 44.0
+  }
+
+  func widthForSection(section: Int) -> CGFloat {
+    if UIScreen.main.bounds.width > 414 {
+      // Greater than iPhone Plus width
+      return collectionView.bounds.width / CGFloat(self.numberOfSections(in: collectionView))
+    }
+    else {
+      return collectionView.bounds.width
+    }
   }
 
 }
