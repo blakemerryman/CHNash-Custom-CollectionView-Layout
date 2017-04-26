@@ -14,6 +14,7 @@
 		460AF3401EB1140900FD7A9A /* GridViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AF33F1EB1140900FD7A9A /* GridViewLayout.swift */; };
 		460AF3421EB1143200FD7A9A /* HorizontalSeparatorReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AF3411EB1143200FD7A9A /* HorizontalSeparatorReusableView.swift */; };
 		460AF3441EB1491500FD7A9A /* GridViewController+GridViewLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AF3431EB1491500FD7A9A /* GridViewController+GridViewLayoutDelegate.swift */; };
+		460AF3461EB14C4000FD7A9A /* GridViewLayout+AttributeHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AF3451EB14C4000FD7A9A /* GridViewLayout+AttributeHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		460AF33F1EB1140900FD7A9A /* GridViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewLayout.swift; sourceTree = "<group>"; };
 		460AF3411EB1143200FD7A9A /* HorizontalSeparatorReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalSeparatorReusableView.swift; sourceTree = "<group>"; };
 		460AF3431EB1491500FD7A9A /* GridViewController+GridViewLayoutDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GridViewController+GridViewLayoutDelegate.swift"; sourceTree = "<group>"; };
+		460AF3451EB14C4000FD7A9A /* GridViewLayout+AttributeHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GridViewLayout+AttributeHelpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +63,9 @@
 				460AF32C1EB112C000FD7A9A /* AppDelegate.swift */,
 				460AF32E1EB112C000FD7A9A /* GridViewController.swift */,
 				460AF3431EB1491500FD7A9A /* GridViewController+GridViewLayoutDelegate.swift */,
-				460AF33F1EB1140900FD7A9A /* GridViewLayout.swift */,
 				460AF3411EB1143200FD7A9A /* HorizontalSeparatorReusableView.swift */,
+				460AF33F1EB1140900FD7A9A /* GridViewLayout.swift */,
+				460AF3451EB14C4000FD7A9A /* GridViewLayout+AttributeHelpers.swift */,
 				460AF33E1EB1130500FD7A9A /* Supporting Files */,
 			);
 			path = "Custom CollectionView Layouts";
@@ -153,6 +156,7 @@
 				460AF32F1EB112C000FD7A9A /* GridViewController.swift in Sources */,
 				460AF3421EB1143200FD7A9A /* HorizontalSeparatorReusableView.swift in Sources */,
 				460AF32D1EB112C000FD7A9A /* AppDelegate.swift in Sources */,
+				460AF3461EB14C4000FD7A9A /* GridViewLayout+AttributeHelpers.swift in Sources */,
 				460AF3401EB1140900FD7A9A /* GridViewLayout.swift in Sources */,
 				460AF3441EB1491500FD7A9A /* GridViewController+GridViewLayoutDelegate.swift in Sources */,
 			);

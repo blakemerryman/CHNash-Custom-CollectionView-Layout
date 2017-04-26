@@ -4,7 +4,4 @@
    <FileRef
       location = "group:Custom CollectionView Layouts.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:CustomCollectionViewLayouts.playground">
-   </FileRef>
 </Workspace>
