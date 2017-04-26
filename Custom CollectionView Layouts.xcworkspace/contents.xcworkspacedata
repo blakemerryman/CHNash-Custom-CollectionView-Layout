@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Custom CollectionView Layouts.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:CustomCollectionViewLayouts.playground">
+   </FileRef>
+</Workspace>
